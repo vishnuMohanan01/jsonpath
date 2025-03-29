@@ -115,11 +115,11 @@ class JsonPath
 
   def self.construct_path(table_row)
     if table_row[:index]
-      table_row[:root_key] + "[" + table_row[:index].to_s + "]"
+      "#{table_row[:root_key]}[#{table_row[:index].to_s}]"
     else
       table_row_key = table_row[:key].include?(".") ? "'#{table_row[:key]}'" : table_row[:key]
 
-      table_row[:root_key] + "." + table_row_key
+      "#{table_row[:root_key]}.#{table_row_key}"
     end
   end
 

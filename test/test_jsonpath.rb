@@ -1295,15 +1295,17 @@ class TestJsonpath < MiniTest::Unit::TestCase
     data = {
       "foo" => nil,
       "bar" => {
-        "baz" => nil
+        "baz" => nil,
+        "baz.foo" => 3
       },
       "bars" => [
         { "foo" => 12 },
         { "foo" => nil },
+        { "foo.baz" => 3 },
         { }
       ]
     }
-    assert_equal ["$", "$.foo", "$.bar", "$.bar.baz", "$.bars", "$.bars[0].foo", "$.bars[0]", "$.bars[1].foo", "$.bars[1]", "$.bars[2]"], JsonPath.fetch_all_path(data)
+    assert_equal ["$", "$.foo", "$.bar", "$.bar.baz", "$.bar.'baz.foo'", "$.bars", "$.bars[0].foo", "$.bars[0]", "$.bars[1].foo", "$.bars[1]", "$.bars[2].'foo.baz'", "$.bars[2]", "$.bars[3]"], JsonPath.fetch_all_path(data)
   end
 
 

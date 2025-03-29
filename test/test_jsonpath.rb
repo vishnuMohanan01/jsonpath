@@ -1044,6 +1044,22 @@ class TestJsonpath < MiniTest::Unit::TestCase
     assert_equal [{ 'category' => 'reference', 'author' => 'Nigel Rees' }, { 'category' => 'fiction', 'author' => 'Evelyn Waugh' }], JsonPath.on(json, '$.store.book[*](category,author)')
   end
 
+  def test_selecting_key_with_a_dot_in_it
+    json = '
+    {
+      "foo.bar": {
+        "baz": 3
+      },
+      "baz.bar": {
+        "foo.bar": "baz"
+      }
+    }
+    '.to_json
+
+    assert_equal [{ 'baz' => 3 }], JsonPath.on(json, '$.\'foo.bar\'')
+    assert_equal ["baz"], JsonPath.on(json, '$.\'baz.bar\'.\'foo.bar\'')
+  end
+
   def test_selecting_multiple_keys_on_array_with_filter
     json = '
     {
